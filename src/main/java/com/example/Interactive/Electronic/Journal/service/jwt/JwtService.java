@@ -1,0 +1,105 @@
+package com.example.Interactive.Electronic.Journal.service.jwt;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.function.Function;
+
+@Service
+public class JwtService {
+
+    @Value("${jwt.secret-key}")
+    private String jwtSecret;
+
+    @Value("${jwt.access-token.expiration}")
+    private long accessTokenExpiration;
+
+    @Value("${jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
+
+    public String generateAccessToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+
+        List<String> authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+        claims.put("authorities", authorities);
+
+        Date date = createExpirationDate(accessTokenExpiration);
+
+        return Jwts.builder()
+                .claims(claims)
+                .subject(userDetails.getUsername())
+                .expiration(date)
+                .signWith(getSignInKey())
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        Date date = createExpirationDate(refreshTokenExpiration);
+
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .expiration(date)
+                .signWith(getSignInKey())
+                .compact();
+    }
+
+    private Date createExpirationDate(long tokenExpiration) {
+        return Date.from(
+                Instant.now()
+                        .plusMillis(tokenExpiration)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+        );
+    }
+
+    private SecretKey getSignInKey() {
+        byte[] keyBites = Decoders.BASE64.decode(jwtSecret);
+
+        return Keys.hmacShaKeyFor(keyBites);
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    private String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        Claims claims = extractAllClaims(token);
+
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+}
