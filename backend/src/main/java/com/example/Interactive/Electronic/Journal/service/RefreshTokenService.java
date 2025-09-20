@@ -18,6 +18,7 @@ public class RefreshTokenService {
     private final JwtService jwtService;
 
     @Transactional
+    public void createRefreshToken(User user, String token) {
         Instant expiresAt = Instant.now().plusMillis(jwtService.getRefreshTokenExpiration());
 
         RefreshToken refreshToken = new RefreshToken();
