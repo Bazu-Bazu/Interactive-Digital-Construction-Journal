@@ -18,7 +18,6 @@ public class RefreshTokenService {
     private final JwtService jwtService;
 
     @Transactional
-    public void addRefreshToken(User user, String token) {
         Instant expiresAt = Instant.now().plusMillis(jwtService.getRefreshTokenExpiration());
 
         RefreshToken refreshToken = new RefreshToken();
@@ -27,11 +26,6 @@ public class RefreshTokenService {
         refreshToken.setExpiresAt(expiresAt);
         refreshToken.setRevoked(false);
         refreshTokenRepository.save(refreshToken);
-    }
-
-    @Transactional
-    public void deleteToken(User user) {
-        refreshTokenRepository.deleteByUser(user);
     }
 
 }
