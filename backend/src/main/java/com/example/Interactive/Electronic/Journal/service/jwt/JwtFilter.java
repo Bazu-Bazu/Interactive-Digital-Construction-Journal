@@ -37,7 +37,9 @@ public class JwtFilter extends OncePerRequestFilter {
         if (path.contains("/swagger") ||
             path.contains("/api-docs") ||
             path.contains("/v3/api-docs") ||
-            path.contains("/auth/"))
+            path.contains("/signup") ||
+            path.contains("/login") ||
+            path.contains("/update-token"))
         {
             filterChain.doFilter(request, response);
             return;
