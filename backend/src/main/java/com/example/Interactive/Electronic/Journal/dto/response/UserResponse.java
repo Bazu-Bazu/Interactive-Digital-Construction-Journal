@@ -14,5 +14,6 @@ public class UserResponse {
     private String patronymic;
     private Role role;
     private String accessToken;
+    private String refreshToken;
 
 }
