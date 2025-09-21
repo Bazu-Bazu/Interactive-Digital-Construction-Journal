@@ -51,5 +51,5 @@ volumes:
   mongodb_data:
 
 networks:
-  journal-network:
+  app_network:
     driver: bridge

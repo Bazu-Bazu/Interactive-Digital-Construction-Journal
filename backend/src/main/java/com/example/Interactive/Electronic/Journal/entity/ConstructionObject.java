@@ -19,7 +19,7 @@ public class ConstructionObject {
     private String name;
 
     @Column(nullable = false)
-    private List<List<Double>> coordinates;
+    private List<Double> coordinates;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "foreman_id")
