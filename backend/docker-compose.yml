@@ -14,11 +14,25 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - app_network
+      - journal-network
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongo_iej
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - journal-network
 
 volumes:
   postgres_data:
+  mongodb_data:
 
 networks:
-  app_network:
+  journal-network:
     driver: bridge
