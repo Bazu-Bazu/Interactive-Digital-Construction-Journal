@@ -54,7 +54,7 @@ public class AuthService {
         return buildUserResponse(user, accessToken, refreshToken);
     }
 
-    public UserResponse updateAccessToken(String refreshToken) {
+    public UserResponse updateToken(String refreshToken) {
         String email = jwtService.extractUsername(refreshToken);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
@@ -67,16 +67,19 @@ public class AuthService {
         }
 
         UserDetails userDetails = new CustomUserDetails(user);
-        String accessToken = jwtService.generateAccessToken(userDetails);
+        String newAccessToken = jwtService.generateAccessToken(userDetails);
+        String newRefreshToken = jwtService.generateRefreshToken(userDetails);
+        refreshTokenService.deleteToken(refreshToken);
+        refreshTokenService.addRefreshToken(user, newRefreshToken);
 
-        return buildUserResponse(user, accessToken, refreshToken);
+        return buildUserResponse(user, newAccessToken, newRefreshToken);
     }
 
     public void logout(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
-        refreshTokenService.deleteToken(user);
+        refreshTokenService.deleteTokenByUser(user);
     }
 
     private UserResponse buildUserResponse(User user, String accessToken, String refreshToken) {

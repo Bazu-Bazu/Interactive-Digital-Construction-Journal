@@ -34,9 +34,15 @@ public class AuthController {
     }
 
     @PostMapping("/update-token")
-    public ResponseEntity<UserResponse> updateToken(@RequestBody UpdateAccessTokenRequest request)
+    public ResponseEntity<UserResponse> updateToken(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody UpdateAccessTokenRequest request)
     {
-        UserResponse response = authService.updateAccessToken(request.getRefreshToken());
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new InvalidTokenException("Invalid authorization header.");
+        }
+
+        UserResponse response = authService.updateToken(request.getRefreshToken());
 
         return ResponseEntity.ok(response);
     }
