@@ -30,8 +30,13 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public void deleteToken(User user) {
+    public void deleteTokenByUser(User user) {
         refreshTokenRepository.deleteByUser(user);
+    }
+
+    @Transactional
+    public void deleteToken(String token) {
+        refreshTokenRepository.deleteByToken(token);
     }
 
 }
