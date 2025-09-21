@@ -22,7 +22,6 @@ public class ConstructionObjectFileService {
     private final ConstructionObjectFileRepository constructionObjectFileRepository;
     private final ConstructionObjectRepository constructionObjectRepository;
 
-
     @Transactional
     public String addFile(MultipartFile file, Long constructionObjectId) throws IOException {
         ObjectId fileId = gridFsTemplate.store(
