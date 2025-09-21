@@ -37,14 +37,16 @@ import com.example.interactivedigitaljournal.auth.presentation.view_model.AuthVi
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.interactivedigitaljournal.auth.domain.models.UserRole
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthResponse
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun SignUpScreen(
+    onRegister: () -> Unit,
     modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel = viewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
 ) {
     val roles = listOf("Заказчик", "Инспектор", "Прораб")
 
@@ -165,8 +167,10 @@ fun SignUpScreen(
                 Text("Зарегистрироваться")
             }
 
-            if (authUiState.repositoryResponse is AuthResponse.Error)
+            if (authUiState.signUpResponse is AuthResponse.Error)
                 Text("Что-то не так")
+            else if (authUiState.signUpResponse is AuthResponse.Success)
+                onRegister()
         }
     }
 }

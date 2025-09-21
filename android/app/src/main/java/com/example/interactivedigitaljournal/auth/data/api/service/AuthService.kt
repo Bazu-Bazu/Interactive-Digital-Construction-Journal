@@ -5,9 +5,10 @@ import com.example.interactivedigitaljournal.auth.data.api.dto.UserDto
 import com.example.interactivedigitaljournal.auth.domain.models.SignInModel
 import com.example.interactivedigitaljournal.auth.domain.models.UserRole
 import io.ktor.client.HttpClient
+import javax.inject.Inject
 import kotlin.String
 
-class AuthService(
+class AuthService @Inject constructor(
     private val httpClient: HttpClient,
 ) {
     suspend fun singUp(singUpModel: SignUpRequestDto): UserDto {

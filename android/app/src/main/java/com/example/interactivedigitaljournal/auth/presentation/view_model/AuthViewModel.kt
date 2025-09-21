@@ -2,6 +2,7 @@ package com.example.interactivedigitaljournal.auth.presentation.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.interactivedigitaljournal.auth.domain.models.SignInModel
 import com.example.interactivedigitaljournal.auth.domain.models.SignUpModel
 import com.example.interactivedigitaljournal.auth.domain.models.UserRole
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthRepository
@@ -28,6 +29,10 @@ class AuthViewModel @Inject constructor(
                 "",
                 UserRole.CUSTOMER,
             ),
+            signInModel = SignInModel(
+                "",
+                "",
+            ),
             mapOf()
         )
     )
@@ -36,6 +41,12 @@ class AuthViewModel @Inject constructor(
     fun updateSignUpModel(transform: SignUpModel.() -> SignUpModel) {
         _uiState.update { currentState ->
             currentState.copy(signUpModel = currentState.signUpModel.transform())
+        }
+    }
+
+    fun updateSignInModel(transform: SignInModel.() -> SignInModel) {
+        _uiState.update { currentState ->
+            currentState.copy(signInModel = currentState.signInModel.transform())
         }
     }
 
@@ -59,18 +70,40 @@ class AuthViewModel @Inject constructor(
             errors["password"] = "Пароль не может быть пустым"
         }
 
-        // Validate email format
         val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
         if (signUpModel.email.isNotBlank() && !signUpModel.email.matches(Regex(emailPattern))) {
             errors["email"] = "Неверный формат электронной почты"
         }
 
-        // Validate password
         if (signUpModel.password.isNotBlank()) {
             if (signUpModel.password.length < 8) {
                 errors["password"] = "Пароль должен содержать не менее 8 символов"
             } else if (!signUpModel.password.contains(Regex("[A-Za-z]")) ||
                 !signUpModel.password.contains(Regex("[0-9]"))) {
+                errors["password"] = "Пароль должен содержать буквы и цифры"
+            }
+        }
+
+        return errors
+    }
+
+    private fun validateSignInModel(signInModel: SignInModel): Map<String, String> {
+        val errors = mutableMapOf<String, String>()
+
+        if (signInModel.email.isBlank()) {
+            errors["email"] = "Электронная почта не может быть пустой"
+        }
+
+        val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
+        if (signInModel.email.isNotBlank() && !signInModel.email.matches(Regex(emailPattern))) {
+            errors["email"] = "Неверный формат электронной почты"
+        }
+
+        if (signInModel.password.isNotBlank()) {
+            if (signInModel.password.length < 8) {
+                errors["password"] = "Пароль должен содержать не менее 8 символов"
+            } else if (!signInModel.password.contains(Regex("[A-Za-z]")) ||
+                !signInModel.password.contains(Regex("[0-9]"))) {
                 errors["password"] = "Пароль должен содержать буквы и цифры"
             }
         }
@@ -90,7 +123,23 @@ class AuthViewModel @Inject constructor(
             }
 
             val res = authRepository.singUp(_uiState.value.signUpModel)
-            _uiState.value = _uiState.value.copy(isLoading = false, repositoryResponse = res)
+            _uiState.value = _uiState.value.copy(isLoading = false, signUpResponse = res)
+        }
+    }
+
+    fun signIn() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            val validateResult = validateSignInModel(_uiState.value.signInModel)
+
+            if (validateResult.isNotEmpty()) {
+                _uiState.value = _uiState.value.copy(errors = validateResult)
+                _uiState.value = _uiState.value.copy(isLoading = false)
+                return@launch
+            }
+
+            val res = authRepository.singIn(_uiState.value.signInModel)
+            _uiState.value = _uiState.value.copy(isLoading = false, signInResponse = res)
         }
     }
 }

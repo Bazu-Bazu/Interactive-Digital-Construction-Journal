@@ -8,8 +8,9 @@ import com.example.interactivedigitaljournal.auth.domain.models.SignUpModel
 import com.example.interactivedigitaljournal.auth.domain.models.User
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthRepository
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthResponse
+import jakarta.inject.Inject
 
-class AuthRepositoryImpl(
+class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,
 ) : AuthRepository {
     override suspend fun singUp(singUpModel: SignUpModel): AuthResponse<User> {
@@ -24,7 +25,7 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun singIn(singUpModel: SignInModel): AuthResponse<String> {
+    override suspend fun singIn(singInModel: SignInModel): AuthResponse<String> {
         return AuthResponse.Success("")
     }
 
