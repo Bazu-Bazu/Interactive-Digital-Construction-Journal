@@ -39,7 +39,8 @@ public class JwtFilter extends OncePerRequestFilter {
             path.contains("/v3/api-docs") ||
             path.contains("/signup") ||
             path.contains("/login") ||
-            path.contains("/update-token"))
+            path.contains("/update-token") ||
+            path.contains("/admin/add"))
         {
             filterChain.doFilter(request, response);
             return;
