@@ -40,6 +40,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api-docs/**")
                         .permitAll()
+                        .requestMatchers("/object/**")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

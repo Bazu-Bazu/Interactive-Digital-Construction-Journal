@@ -15,7 +15,7 @@ public class ConstructionObjectService {
     private final ConstructionObjectRepository constructionObjectRepository;
 
     @Transactional
-    public ObjectResponse createObject(AddObjectRequest request) {
+    public ObjectResponse addObject(AddObjectRequest request) {
         ConstructionObject object = new ConstructionObject();
         object.setName(request.getName());
         object.setCoordinates(request.getCoordinates());
@@ -32,9 +32,9 @@ public class ConstructionObjectService {
                 .coordinates(object.getCoordinates())
                 .startDate(object.getStartDate())
                 .activated(object.getActivated())
-                .customerId(object.getCustomer().getId())
-                .foremanId(object.getForeman().getId())
-                .inspectorId(object.getInspector().getId())
+                .customerId(object.getCustomer() != null ? object.getCustomer().getId() : null)
+                .foremanId(object.getForeman() != null ? object.getForeman().getId() : null)
+                .inspectorId(object.getInspector() != null ? object.getInspector().getId() : null)
                 .build();
     }
 
