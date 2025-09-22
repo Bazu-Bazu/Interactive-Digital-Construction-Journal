@@ -21,7 +21,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             InteractiveDigitalJournalTheme {
-//                SignUpScreen()
                 val navController = rememberNavController()
 
                 NavHost(

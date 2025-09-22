@@ -8,10 +8,12 @@ import com.example.interactivedigitaljournal.auth.domain.models.SignUpModel
 import com.example.interactivedigitaljournal.auth.domain.models.User
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthRepository
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthResponse
+import com.example.interactivedigitaljournal.auth.domain.utils.JwtTokenManager
 import jakarta.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,
+    private val jwtDataStore: JwtTokenManager,
 ) : AuthRepository {
     override suspend fun singUp(singUpModel: SignUpModel): AuthResponse<User> {
         try {
@@ -26,7 +28,13 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun singIn(singInModel: SignInModel): AuthResponse<String> {
-        return AuthResponse.Success("")
+        try {
+            val res = authService.singIn(singInModel)
+            jwtDataStore.saveAccessJwt(res.accessToken)
+            return AuthResponse.Success(res.accessToken)
+        } catch (e: Exception) {
+            return AuthResponse.Error()
+        }
     }
 
     override suspend fun authorize(toke: String): AuthResponse<Unit> {

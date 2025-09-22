@@ -52,7 +52,7 @@ fun SignInScreen(
         ) {
 
             Text(
-                text="Регистрация",
+                text="Вход",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Medium,
             )

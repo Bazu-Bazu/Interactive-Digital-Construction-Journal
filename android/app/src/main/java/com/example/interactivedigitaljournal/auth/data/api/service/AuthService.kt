@@ -19,6 +19,8 @@ class AuthService @Inject constructor(
             "patronymic",
             "firstName",
             UserRole.CUSTOMER,
+            "",
+            "",
         )
     }
 
@@ -30,6 +32,8 @@ class AuthService @Inject constructor(
             "patronymic",
             "firstName",
             UserRole.CUSTOMER,
+            "",
+            "",
         )
     }
 

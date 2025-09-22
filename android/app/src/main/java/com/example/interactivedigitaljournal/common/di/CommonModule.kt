@@ -1,5 +1,6 @@
 package com.example.interactivedigitaljournal.common.di
 
+import com.example.interactivedigitaljournal.auth.domain.utils.JwtTokenManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,9 +14,12 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
 import io.ktor.http.ContentType.Application.Json
+import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import jakarta.inject.Singleton
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 @Module
@@ -23,7 +27,7 @@ import kotlinx.serialization.json.Json
 object CommonModule {
     @Provides
     @Singleton
-    fun provideKtorClient(): HttpClient {
+    fun provideKtorClient(jwtTokenManager: JwtTokenManager): HttpClient {
         return HttpClient(Android) {
             install(ContentNegotiation) {
                 json(Json {
@@ -39,12 +43,12 @@ object CommonModule {
                 connectTimeout = 10_000
                 socketTimeout = 10_000
             }
-//            defaultRequest {
-//                val token = runBlocking { jwtTokenManager.getAccessJwt() }
-//                if (token != null) {
-//                    header(HttpHeaders.Authorization, "Bearer $token")
-//                }
-//            }
+            defaultRequest {
+                val token = runBlocking { jwtTokenManager.getAccessJwt() }
+                if (token != null) {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                }
+            }
         }
     }
 }
