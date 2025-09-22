@@ -6,6 +6,7 @@ import com.example.Interactive.Electronic.Journal.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/add")
-    public ResponseEntity<UserResponse> addAdmin(RegisterUserRequest request) {
+    public ResponseEntity<UserResponse> addAdmin(@RequestBody RegisterUserRequest request) {
         UserResponse response = adminService.addAdmin(request);
 
         return ResponseEntity.ok(response);
