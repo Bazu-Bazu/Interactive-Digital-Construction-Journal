@@ -40,9 +40,11 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api-docs/**")
                         .permitAll()
-                        .requestMatchers("/object/**")
+                        .requestMatchers("/object/add")
                         .hasRole("ADMIN")
-                        .requestMatchers("/object-file/add")
+                        .requestMatchers("/object-file/add",
+                                "/object/get",
+                                "/object/get-n")
                         .hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )

@@ -10,6 +10,7 @@ import java.util.List;
 @Builder
 public class ObjectResponse {
 
+    private Long id;
     private String name;
     private List<Double> coordinates;
     private Long foremanId;
