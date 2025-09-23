@@ -42,6 +42,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/object/**")
                         .hasRole("ADMIN")
+                        .requestMatchers("/object-file/**")
+                        .hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
