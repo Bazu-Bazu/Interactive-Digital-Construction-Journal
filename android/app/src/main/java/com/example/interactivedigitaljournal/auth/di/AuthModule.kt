@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase
 import com.example.interactivedigitaljournal.auth.data.api.service.AuthService
 import com.example.interactivedigitaljournal.auth.data.db.JournalDatabase
 import com.example.interactivedigitaljournal.auth.data.repository.AuthRepositoryImpl
+import com.example.interactivedigitaljournal.auth.data.util.JwtTokenDataStore
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthRepository
 import com.example.interactivedigitaljournal.auth.domain.utils.JwtTokenManager
 import dagger.Module
@@ -47,4 +48,10 @@ object AuthModule {
         appContext,
         JournalDatabase::class.java, "database-name"
     ).build()
+
+    @Provides
+    @Singleton
+    fun provideTokenManager(dataStore: DataStore<Preferences>): JwtTokenManager =
+        JwtTokenDataStore(dataStore)
+
 }

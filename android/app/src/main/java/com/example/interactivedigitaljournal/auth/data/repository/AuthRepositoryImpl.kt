@@ -16,22 +16,24 @@ class AuthRepositoryImpl @Inject constructor(
     private val jwtDataStore: JwtTokenManager,
 ) : AuthRepository {
     override suspend fun singUp(singUpModel: SignUpModel): AuthResponse<User> {
-        try {
-            val res = authService.singUp(
-                SignUpRequestDto
-                    .fromDomainModel(singUpModel)
-            )
-            return AuthResponse.Success(res.toDomainModel())
-        } catch (e: Exception) {
-            return AuthResponse.Error()
-        }
+//        try {
+        val res = authService.singUp(
+            SignUpRequestDto
+                .fromDomainModel(singUpModel)
+        )
+        return AuthResponse.Success(res.toDomainModel())
+//        } catch (e: Exception) {
+//            return AuthResponse.Error()
+//        }
     }
 
     override suspend fun singIn(singInModel: SignInModel): AuthResponse<String> {
         try {
             val res = authService.singIn(singInModel)
-            jwtDataStore.saveAccessJwt(res.accessToken)
-            return AuthResponse.Success(res.accessToken)
+            res.accessToken?.let {
+                jwtDataStore.saveAccessJwt(res.accessToken)
+            }
+            return AuthResponse.Success(res.accessToken ?: "")
         } catch (e: Exception) {
             return AuthResponse.Error()
         }

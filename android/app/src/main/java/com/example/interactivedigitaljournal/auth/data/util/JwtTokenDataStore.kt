@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class JwtTokenDataStore @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
 ) : JwtTokenManager {
     companion object {
         val ACCESS_JWT_KEY = stringPreferencesKey("access_jwt")
