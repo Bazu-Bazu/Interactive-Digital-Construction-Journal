@@ -1,0 +1,6 @@
+package com.example.interactivedigitaljournal.construction_objects.presentation.navigation
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+object ScreenHome

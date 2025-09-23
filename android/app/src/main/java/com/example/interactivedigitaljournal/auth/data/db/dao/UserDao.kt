@@ -8,8 +8,8 @@ import com.example.interactivedigitaljournal.auth.data.db.entity.UserEntity
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM userEntity WHERE email LIKE :email LIMIT 1")
-    fun findByEmail(email: String): UserEntity
+    @Query("SELECT * FROM userEntity LIMIT 1")
+    fun findFirst(): UserEntity
 
     @Insert
     fun insert(user: UserEntity)

@@ -14,18 +14,30 @@ class JwtTokenDataStore @Inject constructor(
 ) : JwtTokenManager {
     companion object {
         val ACCESS_JWT_KEY = stringPreferencesKey("access_jwt")
+        val REFRESH_JWT_KEY = stringPreferencesKey("refresh_jwt")
     }
 
-    override suspend fun saveAccessJwt(accessToken: String) {
+    override suspend fun saveAccessJwt(
+        accessToken: String,
+        refreshToken: String,
+    ) {
         dataStore.edit { preferences ->
             preferences[ACCESS_JWT_KEY] = accessToken
         }
+        dataStore.edit { preferences ->
+            preferences[REFRESH_JWT_KEY] = refreshToken
+        }
     }
 
-    override suspend fun getAccessJwt(): String? {
-        return dataStore.data.map { preferences ->
-            preferences[ACCESS_JWT_KEY]
-        }.first()
+    override suspend fun getAccessJwt(): Pair<String?, String?> {
+        return Pair(
+            dataStore.data.map { preferences ->
+                preferences[ACCESS_JWT_KEY]
+            }.first(),
+            dataStore.data.map { preferences ->
+                preferences[REFRESH_JWT_KEY]
+            }.first(),
+        )
     }
 
     override suspend fun clearAll() {

@@ -9,6 +9,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.interactivedigitaljournal.auth.data.api.service.AuthService
 import com.example.interactivedigitaljournal.auth.data.db.JournalDatabase
+import com.example.interactivedigitaljournal.auth.data.db.dao.UserDao
 import com.example.interactivedigitaljournal.auth.data.repository.AuthRepositoryImpl
 import com.example.interactivedigitaljournal.auth.data.util.JwtTokenDataStore
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthRepository
@@ -39,12 +40,12 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(authService: AuthService, jwtTokenManager: JwtTokenManager): AuthRepository =
-        AuthRepositoryImpl(authService, jwtTokenManager)
+    fun provideAuthRepository(authService: AuthService, jwtTokenManager: JwtTokenManager, userDao: UserDao): AuthRepository =
+        AuthRepositoryImpl(authService, jwtTokenManager, userDao)
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext appContext: Context): RoomDatabase = Room.databaseBuilder(
+    fun provideDatabase(@ApplicationContext appContext: Context): JournalDatabase = Room.databaseBuilder(
         appContext,
         JournalDatabase::class.java, "database-name"
     ).build()
@@ -54,4 +55,7 @@ object AuthModule {
     fun provideTokenManager(dataStore: DataStore<Preferences>): JwtTokenManager =
         JwtTokenDataStore(dataStore)
 
+    @Provides
+    @Singleton
+    fun provideUserDao(db: JournalDatabase): UserDao = db.userDao()
 }

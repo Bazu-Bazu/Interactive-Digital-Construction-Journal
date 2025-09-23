@@ -20,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -165,6 +166,10 @@ fun SignUpScreen(
 
             Button(onClick = authViewModel::signUp) {
                 Text("Зарегистрироваться")
+            }
+
+            TextButton(onClick = onRegister) {
+                Text("Войти")
             }
 
             if (authUiState.signUpResponse is AuthResponse.Error)

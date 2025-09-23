@@ -6,7 +6,7 @@ import com.example.interactivedigitaljournal.auth.domain.models.UserRole
 
 @Entity
 data class UserEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val email: String,
     val surname: String,
     val patronymic: String,

@@ -30,6 +30,7 @@ import com.example.interactivedigitaljournal.auth.presentation.view_model.AuthVi
 
 @Composable
 fun SignInScreen(
+    onSignIn: () -> Unit,
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
@@ -84,6 +85,8 @@ fun SignInScreen(
 
             if (authUiState.signInResponse is AuthResponse.Error)
                 Text("Что-то не так")
+            else if (authUiState.signInResponse is AuthResponse.Success)
+                onSignIn()
         }
     }
 }
