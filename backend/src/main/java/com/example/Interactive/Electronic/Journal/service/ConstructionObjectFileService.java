@@ -4,10 +4,15 @@ import com.example.Interactive.Electronic.Journal.dto.response.ObjectFileRespons
 import com.example.Interactive.Electronic.Journal.entity.ConstructionObject;
 import com.example.Interactive.Electronic.Journal.entity.ConstructionObjectFile;
 import com.example.Interactive.Electronic.Journal.exception.ConstructionObjectException;
+import com.example.Interactive.Electronic.Journal.exception.FileNotFoundException;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectFileRepository;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectRepository;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +53,23 @@ public class ConstructionObjectFileService {
         return ObjectFileResponse.builder()
                 .url(objectFile.getUrl())
                 .build();
+    }
+
+    public GridFsResource getFileByUrl(String url) {
+        ConstructionObjectFile fileMetadata = constructionObjectFileRepository.findByUrl(url)
+                .orElseThrow(() -> new FileNotFoundException("File metadata not found."));
+
+        GridFSFile gridFSFile = gridFsTemplate.findOne(
+                new Query(Criteria.where("filename").is(fileMetadata.getFileName())));
+
+        return gridFsTemplate.getResource(gridFSFile);
+    }
+
+    public ConstructionObjectFile getFileMetadataByUrl(String url) {
+        ConstructionObjectFile fileMetadata = constructionObjectFileRepository.findByUrl(url)
+                .orElseThrow(() -> new FileNotFoundException("File metadata not found."));
+
+        return fileMetadata;
     }
 
 }

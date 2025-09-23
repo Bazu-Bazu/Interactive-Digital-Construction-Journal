@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/object/**")
                         .hasRole("ADMIN")
-                        .requestMatchers("/object-file/**")
+                        .requestMatchers("/object-file/add")
                         .hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )
