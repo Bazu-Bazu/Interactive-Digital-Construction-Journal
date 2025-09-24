@@ -44,7 +44,8 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
                         .requestMatchers("/object-file/add",
                                 "/object/get",
-                                "/object/get-n")
+                                "/object/get-n",
+                                "/object/activate")
                         .hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )

@@ -1,10 +1,13 @@
 package com.example.Interactive.Electronic.Journal.controller;
 
+import com.example.Interactive.Electronic.Journal.dto.request.ActivateObjectRequest;
 import com.example.Interactive.Electronic.Journal.dto.request.AddObjectRequest;
 import com.example.Interactive.Electronic.Journal.dto.response.ObjectResponse;
 import com.example.Interactive.Electronic.Journal.service.ConstructionObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +36,17 @@ public class ConstructionObjectController {
     @GetMapping ("/get-n")
     ResponseEntity<List<ObjectResponse>> getNObjects(@RequestParam Integer count) {
         List<ObjectResponse> response = constructionObjectService.getNObjects(count);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/activate")
+    ResponseEntity<ObjectResponse> activate(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ActivateObjectRequest request)
+    {
+        String customerEmail = userDetails.getUsername();
+        ObjectResponse response = constructionObjectService.activateObject(customerEmail, request);
 
         return ResponseEntity.ok(response);
     }
