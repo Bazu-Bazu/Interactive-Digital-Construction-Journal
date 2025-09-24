@@ -4,6 +4,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+<<<<<<< HEAD
+=======
+import lombok.Getter;
+>>>>>>> backend
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +22,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+<<<<<<< HEAD
+=======
+@Getter
+>>>>>>> backend
 public class JwtService {
 
     @Value("${jwt.secret-key}")

@@ -17,10 +17,17 @@ public class PartController {
     private final PartService partService;
 
     @PostMapping("/add")
+<<<<<<< HEAD
     public ResponseEntity<PartResponse> addPart(AddPartRequest request) {
         PartResponse response = partService.addPart(request);
 
         return ResponseEntity.ok(response);
+=======
+    public ResponseEntity<List<PartResponse>> addPart(@RequestBody List<AddPartRequest> requests) {
+        List<PartResponse> responses = partService.addPart(requests);
+
+        return ResponseEntity.ok(responses);
+>>>>>>> backend
     }
 
     @GetMapping("/get")
