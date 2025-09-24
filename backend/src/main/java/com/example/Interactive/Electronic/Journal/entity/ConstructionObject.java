@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,8 +40,8 @@ public class ConstructionObject {
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-//    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Part> parts = new ArrayList<>();
+    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Part> parts = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Remark> remarks = new ArrayList<>();
