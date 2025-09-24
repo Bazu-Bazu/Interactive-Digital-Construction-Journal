@@ -19,10 +19,6 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-<<<<<<< HEAD
-.idea
-=======
->>>>>>> backend
 *.iws
 *.iml
 *.ipr
@@ -36,10 +32,6 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-<<<<<<< HEAD
-=======
-target/
->>>>>>> backend
 
 ### VS Code ###
 .vscode/

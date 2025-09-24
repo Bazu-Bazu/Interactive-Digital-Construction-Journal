@@ -20,22 +20,6 @@ public class PartService {
     private final PartRepository partRepository;
     private final ConstructionObjectRepository constructionObjectRepository;
 
-<<<<<<< HEAD
-    public PartResponse addPart(AddPartRequest request) {
-        ConstructionObject object = constructionObjectRepository.findById(request.getObjectId())
-                .orElseThrow(() -> new ConstructionObjectException("Object not found."));
-
-        Part part = new Part();
-        part.setName(request.getName());
-        part.setDescription(request.getDescription());
-        part.setObject(object);
-        part.setStartDate(request.getStartDate());
-        part.setEndDate(request.getEndDate());
-        part.setDone(request.getDone());
-        partRepository.save(part);
-
-        return buildPartResponse(part);
-=======
     public List<PartResponse> addPart(List<AddPartRequest> requests) {
         ConstructionObject object = constructionObjectRepository.findById(requests.get(0).getObjectId())
                 .orElseThrow(() -> new ConstructionObjectException("Object not found."));
@@ -56,7 +40,6 @@ public class PartService {
         return parts.stream()
                 .map(this::buildPartResponse)
                 .toList();
->>>>>>> backend
     }
 
     public PartResponse getPart(Long partId) {

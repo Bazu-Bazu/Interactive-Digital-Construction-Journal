@@ -40,11 +40,7 @@ public class ConstructionObject {
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-<<<<<<< HEAD
-    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
-=======
     @OneToMany(mappedBy = "object", cascade = CascadeType.ALL, orphanRemoval = true)
->>>>>>> backend
     private List<Part> parts = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
