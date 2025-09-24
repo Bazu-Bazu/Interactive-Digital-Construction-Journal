@@ -29,7 +29,7 @@ class JwtTokenDataStore @Inject constructor(
         }
     }
 
-    override suspend fun getAccessJwt(): Pair<String?, String?> {
+    override suspend fun getJwt(): Pair<String?, String?> {
         return Pair(
             dataStore.data.map { preferences ->
                 preferences[ACCESS_JWT_KEY]

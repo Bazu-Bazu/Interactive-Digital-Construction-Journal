@@ -8,7 +8,6 @@ import com.example.interactivedigitaljournal.auth.data.db.entity.UserEntity
 import com.example.interactivedigitaljournal.auth.domain.models.SignInModel
 import com.example.interactivedigitaljournal.auth.domain.models.SignUpModel
 import com.example.interactivedigitaljournal.auth.domain.models.User
-import com.example.interactivedigitaljournal.auth.domain.models.UserRole
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthRepository
 import com.example.interactivedigitaljournal.auth.domain.repository.AuthResponse
 import com.example.interactivedigitaljournal.auth.domain.utils.JwtTokenManager
@@ -55,7 +54,28 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun authorize(toke: String): AuthResponse<Unit> {
-        return AuthResponse.Success(Unit)
+    override suspend fun isAuthorized(): AuthResponse<Unit> {
+        try {
+            if ((jwtDataStore.getJwt().first == null) || (jwtDataStore.getJwt().first == ""))
+                return AuthResponse.Unauthorized()
+            return AuthResponse.Success(Unit)
+        } catch (e: Exception) {
+            return AuthResponse.Error()
+        }
     }
+
+    override suspend fun getCurrentUser(): AuthResponse<User> =
+        try {
+            AuthResponse.Success(userDao.findFirst().toDomain())
+        } catch (e: Exception) {
+            AuthResponse.Error()
+        }
+
+    override suspend fun logout(): AuthResponse<Unit> =
+        try {
+            AuthResponse.Success(authService.logout())
+        } catch (e: Exception) {
+            AuthResponse.Error()
+        }
+
 }

@@ -6,8 +6,8 @@ import com.example.interactivedigitaljournal.auth.domain.models.User
 
 interface AuthRepository {
     suspend fun singUp(singUpModel: SignUpModel) : AuthResponse<User>
-
     suspend fun singIn(singInModel: SignInModel) : AuthResponse<String>
-
-    suspend fun authorize(toke: String) : AuthResponse<Unit>
+    suspend fun isAuthorized() : AuthResponse<Unit>
+    suspend fun getCurrentUser(): AuthResponse<User>
+    suspend fun logout(): AuthResponse<Unit>
 }

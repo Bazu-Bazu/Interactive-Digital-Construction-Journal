@@ -30,17 +30,11 @@ class AuthService @Inject constructor(
             setBody(singInModel)
         }
         return res.body<UserDto>()
-//        return UserDto(
-////            "id",
-//            "email@emial.com",
-//            "surname",
-//            "patronymic",
-//            "firstName",
-//            ServerUserRole.ROLE_CUSTOMER,
-//            "",
-//            "",
-//        )
     }
 
-    suspend fun authorize(toke: String) {}
+    suspend fun logout() {
+        httpClient.post(AuthApiRoutes.signIn) {
+            contentType(ContentType.Application.Json)
+        }
+    }
 }

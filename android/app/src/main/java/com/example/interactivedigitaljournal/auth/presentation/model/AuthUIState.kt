@@ -11,5 +11,8 @@ data class AuthUIState(
     val errors: Map<String, String>,
     val signUpResponse: AuthResponse<User>? = null,
     val signInResponse: AuthResponse<String>? = null,
+    val isAuthorizedResponse: AuthResponse<Unit>? = null,
+    val logoutResponse: AuthResponse<Unit>? = null,
+    val getUserResponse: AuthResponse<User>? = null,
     val isLoading: Boolean = false,
 )

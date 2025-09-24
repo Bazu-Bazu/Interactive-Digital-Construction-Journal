@@ -133,13 +133,42 @@ class AuthViewModel @Inject constructor(
             val validateResult = validateSignInModel(_uiState.value.signInModel)
 
             if (validateResult.isNotEmpty()) {
-                _uiState.value = _uiState.value.copy(errors = validateResult)
-                _uiState.value = _uiState.value.copy(isLoading = false)
+                _uiState.value = _uiState.value.copy(isLoading = false, errors = validateResult)
                 return@launch
             }
 
             val res = authRepository.singIn(_uiState.value.signInModel)
             _uiState.value = _uiState.value.copy(isLoading = false, signInResponse = res)
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            _uiState.value = _uiState.value.copy(
+                isAuthorizedResponse = authRepository.logout(),
+                isLoading = false,
+            )
+        }
+    }
+
+    fun isAuthorized() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            _uiState.value = _uiState.value.copy(
+                isAuthorizedResponse = authRepository.isAuthorized(),
+                isLoading = false,
+            )
+        }
+    }
+
+    fun getUser() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            _uiState.value = _uiState.value.copy(
+                getUserResponse = authRepository.getCurrentUser(),
+                isLoading = false,
+            )
         }
     }
 }

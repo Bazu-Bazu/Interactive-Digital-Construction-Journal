@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.defaultRequest
@@ -15,7 +14,6 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
-import io.ktor.http.ContentType.Application.Json
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import jakarta.inject.Singleton
@@ -44,7 +42,7 @@ object CommonModule {
                 socketTimeout = 10_000
             }
             defaultRequest {
-                val token = runBlocking { jwtTokenManager.getAccessJwt() }
+                val token = runBlocking { jwtTokenManager.getJwt() }
                 if (token != null) {
                     header(HttpHeaders.Authorization, "Bearer $token")
                 }
