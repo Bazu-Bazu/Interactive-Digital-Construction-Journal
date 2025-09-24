@@ -1,19 +1,10 @@
 package com.example.Interactive.Electronic.Journal.dto.request;
 
-import com.example.Interactive.Electronic.Journal.enums.Role;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class RegisterUserRequest {
-
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    @Size(min = 8)
-    private String password;
+public class RegisterUserDto {
 
     @NotBlank
     private String firstName;
@@ -21,9 +12,13 @@ public class RegisterUserRequest {
     @NotBlank
     private String lastName;
 
+    @NotBlank
     private String patronymic;
 
     @NotBlank
-    private Role role;
+    private String email;
+
+    @NotBlank
+    private String password;
 
 }
