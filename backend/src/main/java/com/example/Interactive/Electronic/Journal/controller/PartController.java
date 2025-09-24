@@ -17,10 +17,10 @@ public class PartController {
     private final PartService partService;
 
     @PostMapping("/add")
-    public ResponseEntity<PartResponse> addPart(AddPartRequest request) {
-        PartResponse response = partService.addPart(request);
+    public ResponseEntity<List<PartResponse>> addPart(@RequestBody List<AddPartRequest> requests) {
+        List<PartResponse> responses = partService.addPart(requests);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/get")
