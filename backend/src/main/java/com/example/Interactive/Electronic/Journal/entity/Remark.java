@@ -17,16 +17,20 @@ public class Remark {
     private Long id;
 
     @Column(name = "created_at", nullable = false)
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    String description;
+    private String description;
 
     @Column(nullable = false)
     private List<Double> coordinates;
 
     @Column(nullable = false)
     private Boolean fixed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "object_id")
+    private ConstructionObject object;
 
     @ElementCollection
     @CollectionTable(name = "remark_files", joinColumns = @JoinColumn(name = "remark_id"))
