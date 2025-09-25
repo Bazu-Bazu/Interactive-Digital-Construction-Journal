@@ -10,6 +10,7 @@ import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectR
 import com.example.Interactive.Electronic.Journal.repository.PartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class PartService {
     private final PartRepository partRepository;
     private final ConstructionObjectRepository constructionObjectRepository;
 
+    @Transactional
     public List<PartResponse> addPart(List<AddPartRequest> requests) {
         ConstructionObject object = constructionObjectRepository.findById(requests.get(0).getObjectId())
                 .orElseThrow(() -> new ConstructionObjectException("Object not found."));

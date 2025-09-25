@@ -51,6 +51,7 @@ public class ConstructionObjectService {
                 .toList();
     }
 
+    @Transactional
     public ObjectResponse activateObject(String customerEmail, ActivateObjectRequest request) {
         User customer = userRepository.findByEmail(customerEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
