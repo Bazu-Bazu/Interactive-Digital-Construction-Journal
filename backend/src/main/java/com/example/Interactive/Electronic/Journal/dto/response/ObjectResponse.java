@@ -13,6 +13,7 @@ public class ObjectResponse {
     private Long id;
     private String name;
     private List<Double> coordinates;
+    private String address;
     private Long foremanId;
     private Long customerId;
     private Long inspectorId;

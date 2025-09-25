@@ -16,6 +16,9 @@ public class AddObjectRequest {
     private List<Double> coordinates;
 
     @NotBlank
+    private String address;
+
+    @NotBlank
     private LocalDate startDate;
 
 }

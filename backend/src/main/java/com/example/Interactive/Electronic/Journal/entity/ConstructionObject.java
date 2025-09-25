@@ -22,6 +22,9 @@ public class ConstructionObject {
     @Column(nullable = false)
     private List<Double> coordinates;
 
+    @Column(nullable = false)
+    private String address;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "foreman_id")
     private User foreman;

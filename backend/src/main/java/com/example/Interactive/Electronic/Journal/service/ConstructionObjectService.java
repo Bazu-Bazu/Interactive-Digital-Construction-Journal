@@ -28,6 +28,7 @@ public class ConstructionObjectService {
         ConstructionObject object = new ConstructionObject();
         object.setName(request.getName());
         object.setCoordinates(request.getCoordinates());
+        object.setAddress(request.getAddress());
         object.setStartDate(request.getStartDate());
         object.setActivated(false);
         constructionObjectRepository.save(object);
@@ -76,6 +77,7 @@ public class ConstructionObjectService {
                 .id(object.getId())
                 .name(object.getName())
                 .coordinates(object.getCoordinates())
+                .address(object.getAddress())
                 .startDate(object.getStartDate())
                 .activated(object.getActivated())
                 .customerId(object.getCustomer() != null ? object.getCustomer().getId() : null)

@@ -3,9 +3,6 @@ package com.example.Interactive.Electronic.Journal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "changes")
 @Data
