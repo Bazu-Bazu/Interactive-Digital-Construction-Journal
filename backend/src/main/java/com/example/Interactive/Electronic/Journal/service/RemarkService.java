@@ -5,6 +5,7 @@ import com.example.Interactive.Electronic.Journal.dto.response.RemarkResponse;
 import com.example.Interactive.Electronic.Journal.entity.ConstructionObject;
 import com.example.Interactive.Electronic.Journal.entity.Remark;
 import com.example.Interactive.Electronic.Journal.exception.ConstructionObjectException;
+import com.example.Interactive.Electronic.Journal.exception.RemarkException;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectRepository;
 import com.example.Interactive.Electronic.Journal.repository.RemarkRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,17 @@ public class RemarkService {
         remark.setCreatedAt(LocalDateTime.now());
         remark.setFixed(false);
         remark.setObject(object);
+        remarkRepository.save(remark);
+
+        return buildRemarkResponse(remark);
+    }
+
+    @Transactional
+    public RemarkResponse fixedRemark(Long remarkId) {
+        Remark remark = remarkRepository.findById(remarkId)
+                .orElseThrow(() -> new RemarkException("Remark not found."));
+
+        remark.setFixed(true);
         remarkRepository.save(remark);
 
         return buildRemarkResponse(remark);

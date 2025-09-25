@@ -5,10 +5,7 @@ import com.example.Interactive.Electronic.Journal.dto.response.RemarkResponse;
 import com.example.Interactive.Electronic.Journal.service.RemarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/remark")
@@ -20,6 +17,13 @@ public class RemarkController {
     @PostMapping("/add")
     public ResponseEntity<RemarkResponse> addRemark(@RequestBody AddRemarkRequest request) {
         RemarkResponse response = remarkService.addRemark(request);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/fixed")
+    public ResponseEntity<RemarkResponse> fixedRemark(@RequestParam Long remarkId) {
+        RemarkResponse response = remarkService.fixedRemark(remarkId);
 
         return ResponseEntity.ok(response);
     }
