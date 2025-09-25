@@ -28,9 +28,9 @@ public class Remark {
     @Column(nullable = false)
     private Boolean fixed;
 
-//    @ElementCollection
-//    @CollectionTable(name = "remark_files", joinColumns = @JoinColumn(name = "remark_id"))
-//    @Column(name = "file_url")
-//    private List<String> urls = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "remark_files", joinColumns = @JoinColumn(name = "remark_id"))
+    @Column(name = "file_url")
+    private List<String> urls = new ArrayList<>();
 
 }
