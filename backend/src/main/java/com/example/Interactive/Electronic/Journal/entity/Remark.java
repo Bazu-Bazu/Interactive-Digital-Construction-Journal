@@ -29,7 +29,7 @@ public class Remark {
     private Boolean fixed;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "object_id")
+    @JoinColumn(name = "object_id", nullable = false)
     private ConstructionObject object;
 
     @ElementCollection

@@ -42,7 +42,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/object-file/add",
                                 "/object/**",
-                                "/remark/**")
+                                "/remark/**",
+                                "remark-file/**")
                         .hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )

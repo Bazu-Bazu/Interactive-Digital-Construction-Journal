@@ -12,8 +12,8 @@ public class RemarkFile {
     @Id
     private String id;
 
-    @Field(name = "object_id")
-    private Long objectId;
+    @Field(name = "remark_id")
+    private Long remarkId;
 
     @Field(name = "file_name")
     private String fileName;

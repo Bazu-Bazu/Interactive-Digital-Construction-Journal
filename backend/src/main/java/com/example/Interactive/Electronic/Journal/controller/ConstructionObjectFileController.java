@@ -24,7 +24,7 @@ public class ConstructionObjectFileController {
     @PostMapping("/add")
     public ResponseEntity<ObjectFileResponse> addFile(
             @RequestParam("file") MultipartFile file,
-            Long objectId) throws IOException
+            @RequestParam Long objectId) throws IOException
     {
         ObjectFileResponse response = constructionObjectFileService.addFile(file, objectId);
 
