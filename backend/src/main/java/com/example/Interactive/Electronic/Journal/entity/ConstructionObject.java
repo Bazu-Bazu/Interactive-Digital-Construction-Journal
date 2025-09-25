@@ -46,8 +46,8 @@ public class ConstructionObject {
 //    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Remark> remarks = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Change> changes = new ArrayList<>();
+    @OneToMany(mappedBy = "object", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Change> changes = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Material> materials = new ArrayList<>();
