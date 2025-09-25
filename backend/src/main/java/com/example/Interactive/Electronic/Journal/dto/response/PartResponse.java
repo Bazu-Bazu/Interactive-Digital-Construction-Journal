@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Builder
 public class PartResponse {
 
+    private Long id;
     private Long objectId;
     private String name;
     private String description;

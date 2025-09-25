@@ -61,6 +61,7 @@ public class PartService {
 
     private PartResponse buildPartResponse(Part part) {
         return PartResponse.builder()
+                .id(part.getId())
                 .objectId(part.getObject().getId())
                 .name(part.getName())
                 .description(part.getDescription())
