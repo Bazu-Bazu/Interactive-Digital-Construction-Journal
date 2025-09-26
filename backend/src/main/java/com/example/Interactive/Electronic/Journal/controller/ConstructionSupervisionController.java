@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/supervision")
@@ -27,6 +26,28 @@ public class ConstructionSupervisionController {
         String inspectorEmail = userDetails.getUsername();
 
         SupervisionResponse response = constructionSupervisionService.addSupervision(inspectorEmail, request);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/add-customers")
+    public ResponseEntity<SupervisionResponse> addCustomersToSupervision(
+            @RequestParam List<Long> customerIds,
+            @RequestParam Long supervisionId)
+    {
+        SupervisionResponse response = constructionSupervisionService
+                .addCustomersToSupervision(customerIds, supervisionId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/add-inspectors")
+    public ResponseEntity<SupervisionResponse> addInspectorsToSupervision(
+            @RequestParam List<Long> inspectorIds,
+            @RequestParam Long supervisionId)
+    {
+        SupervisionResponse response = constructionSupervisionService
+                .addInspectorsToSupervision(inspectorIds, supervisionId);
 
         return ResponseEntity.ok(response);
     }
