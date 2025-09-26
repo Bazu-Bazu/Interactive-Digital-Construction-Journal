@@ -18,10 +18,10 @@ public class ConstructionSupervision {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "supervision", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "inspectorSupervision", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> inspectors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "supervision", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customerSupervision", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> customers = new ArrayList<>();
 
 }

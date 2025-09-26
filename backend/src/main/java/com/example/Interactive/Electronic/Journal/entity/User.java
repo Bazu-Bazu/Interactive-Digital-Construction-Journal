@@ -33,7 +33,11 @@ public class User {
     private boolean enabled;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supervision_id", nullable = false)
-    private ConstructionSupervision supervision;
+    @JoinColumn(name = "inspector_supervision_id", nullable = false)
+    private ConstructionSupervision inspectorSupervision;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_supervision_id", nullable = false)
+    private ConstructionSupervision customerSupervision;
 
 }
