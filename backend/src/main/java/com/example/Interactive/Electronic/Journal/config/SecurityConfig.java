@@ -45,6 +45,8 @@ public class SecurityConfig {
                                 "/remark/**",
                                 "remark-file/**")
                         .hasRole("CUSTOMER")
+                        .requestMatchers("/supervision/**")
+                        .hasRole("INSPECTOR")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
