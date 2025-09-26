@@ -32,4 +32,8 @@ public class User {
 
     private boolean enabled;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supervision_id", nullable = false)
+    private ConstructionSupervision supervision;
+
 }
