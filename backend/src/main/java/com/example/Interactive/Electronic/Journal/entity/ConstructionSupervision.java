@@ -18,6 +18,9 @@ public class ConstructionSupervision {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @OneToMany(mappedBy = "supervision", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConstructionObject> objects = new ArrayList<>();
+
     @OneToMany(mappedBy = "inspectorSupervision", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> inspectors = new ArrayList<>();
 

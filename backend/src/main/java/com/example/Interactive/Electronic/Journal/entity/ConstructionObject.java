@@ -29,13 +29,17 @@ public class ConstructionObject {
     @JoinColumn(name = "foreman_id")
     private User foreman;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private User customer;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "inspector_id")
     private User inspector;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supervision_id")
+    private ConstructionSupervision supervision;
 
     @Column(nullable = false)
     private Boolean activated;
