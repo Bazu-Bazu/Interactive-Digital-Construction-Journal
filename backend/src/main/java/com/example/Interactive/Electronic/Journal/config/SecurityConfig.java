@@ -41,9 +41,10 @@ public class SecurityConfig {
                                 "/api-docs/**")
                         .permitAll()
                         .requestMatchers("/object-file/add",
-                                "/object/**",
+                                "/object/add",
+                                "/object/activate",
                                 "/remark/**",
-                                "remark-file/**")
+                                "/remark-file/**")
                         .hasRole("CUSTOMER")
                         .requestMatchers("/supervision/add",
                                 "/supervision/add-customers",

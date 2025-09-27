@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface ConstructionObjectRepository extends JpaRepository<ConstructionObject, Long> {
 
     Optional<ConstructionObject> findById(Long id);
+    List<ConstructionObject> findAllBySupervisionId(Long id);
 
     @Query(value = "SELECT * FROM construction_objects ORDER BY start_date ASC LIMIT ?1", nativeQuery = true)
     List<ConstructionObject> findTopNByOrderByStartDateAsc(int count);

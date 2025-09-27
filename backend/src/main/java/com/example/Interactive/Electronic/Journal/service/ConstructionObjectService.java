@@ -54,6 +54,14 @@ public class ConstructionObjectService {
                 .toList();
     }
 
+    public List<ObjectResponse> getBySupervisionId(Long supervisionId) {
+        List<ConstructionObject> objectsList = constructionObjectRepository.findAllBySupervisionId(supervisionId);
+
+        return objectsList.stream()
+                .map(this::buildObjectResponse)
+                .toList();
+    }
+
     @Transactional
     public ObjectResponse activateObject(String customerEmail, ActivateObjectRequest request) {
         User customer = userRepository.findByEmail(customerEmail)

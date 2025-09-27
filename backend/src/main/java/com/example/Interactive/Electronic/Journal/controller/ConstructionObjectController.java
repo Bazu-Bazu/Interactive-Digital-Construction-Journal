@@ -34,14 +34,21 @@ public class ConstructionObjectController {
     }
 
     @GetMapping ("/get-n")
-    ResponseEntity<List<ObjectResponse>> getNObjects(@RequestParam Integer count) {
+    public ResponseEntity<List<ObjectResponse>> getNObjects(@RequestParam Integer count) {
         List<ObjectResponse> response = constructionObjectService.getNObjects(count);
 
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/get-by-supervision")
+    public ResponseEntity<List<ObjectResponse>> getBySupervisionId(@RequestParam Long supervisionId) {
+        List<ObjectResponse> response = constructionObjectService.getBySupervisionId(supervisionId);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/activate")
-    ResponseEntity<ObjectResponse> activate(
+    public ResponseEntity<ObjectResponse> activate(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ActivateObjectRequest request)
     {
