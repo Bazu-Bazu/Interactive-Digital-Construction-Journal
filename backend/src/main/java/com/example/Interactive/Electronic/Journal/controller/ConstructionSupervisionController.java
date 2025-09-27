@@ -52,4 +52,11 @@ public class ConstructionSupervisionController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/get-by-name")
+    public ResponseEntity<SupervisionResponse> getSupervisionByName(@RequestParam String name) {
+        SupervisionResponse response = constructionSupervisionService.getSupervisionByName(name);
+
+        return ResponseEntity.ok(response);
+    }
+
 }

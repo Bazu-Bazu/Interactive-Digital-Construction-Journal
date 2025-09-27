@@ -6,6 +6,7 @@ import com.example.Interactive.Electronic.Journal.entity.ConstructionSupervision
 import com.example.Interactive.Electronic.Journal.entity.User;
 import com.example.Interactive.Electronic.Journal.enums.Role;
 import com.example.Interactive.Electronic.Journal.exception.ConstructionObjectException;
+import com.example.Interactive.Electronic.Journal.exception.ConstructionSupervisionException;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionSupervisionRepository;
 import com.example.Interactive.Electronic.Journal.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +77,13 @@ public class ConstructionSupervisionService {
 
         filterInspectors.forEach(inspector -> inspector.setInspectorSupervision(supervision));
         userRepository.saveAll(filterInspectors);
+
+        return buildSupervisionResponse(supervision);
+    }
+
+    public SupervisionResponse getSupervisionByName(String name) {
+        ConstructionSupervision supervision = constructionSupervisionRepository.findByName(name)
+                .orElseThrow(() -> new ConstructionSupervisionException("Supervision not found."));
 
         return buildSupervisionResponse(supervision);
     }
