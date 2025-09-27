@@ -14,6 +14,7 @@ public class UserResponse {
     private String lastName;
     private String patronymic;
     private Role role;
+    private Long supervisionId;
     private String accessToken;
     private String refreshToken;
 

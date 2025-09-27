@@ -83,12 +83,25 @@ public class AuthService {
     }
 
     private UserResponse buildUserResponse(User user, String accessToken, String refreshToken) {
+        Long supervisionId;
+        if (user.getCustomerSupervision() != null) {
+            supervisionId = user.getCustomerSupervision().getId();
+        }
+        else if (user.getInspectorSupervision() != null) {
+            supervisionId = user.getInspectorSupervision().getId();
+        }
+        else {
+            supervisionId = null;
+        }
+
         return UserResponse.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .patronymic(user.getPatronymic())
                 .role(user.getRole())
+                .supervisionId(supervisionId)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

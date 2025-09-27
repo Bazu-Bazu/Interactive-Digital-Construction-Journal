@@ -46,6 +46,17 @@ public class UserService {
     }
 
     private UserResponse buildUserResponse(User user) {
+        Long supervisionId;
+        if (user.getCustomerSupervision() != null) {
+            supervisionId = user.getCustomerSupervision().getId();
+        }
+        else if (user.getInspectorSupervision() != null) {
+            supervisionId = user.getInspectorSupervision().getId();
+        }
+        else {
+            supervisionId = null;
+        }
+
         return UserResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -53,6 +64,7 @@ public class UserService {
                 .lastName(user.getLastName())
                 .patronymic(user.getPatronymic())
                 .role(user.getRole())
+                .supervisionId(supervisionId)
                 .build();
     }
 
