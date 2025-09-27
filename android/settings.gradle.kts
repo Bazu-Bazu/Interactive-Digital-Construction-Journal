@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "interactiveDigitalJournal"
 include(":app")
+ 

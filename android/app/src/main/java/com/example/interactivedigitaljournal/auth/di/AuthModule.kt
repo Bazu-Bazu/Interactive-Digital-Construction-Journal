@@ -35,8 +35,8 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideAuthService(httpClient: HttpClient): AuthService =
-        AuthService(httpClient)
+    fun provideAuthService(httpClient: HttpClient, jwtTokenManager: JwtTokenManager): AuthService =
+        AuthService(httpClient, jwtTokenManager)
 
     @Provides
     @Singleton

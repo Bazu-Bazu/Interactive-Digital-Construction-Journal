@@ -25,7 +25,7 @@ import kotlinx.serialization.json.Json
 object CommonModule {
     @Provides
     @Singleton
-    fun provideKtorClient(jwtTokenManager: JwtTokenManager): HttpClient {
+    fun provideKtorClient(): HttpClient {
         return HttpClient(Android) {
             install(ContentNegotiation) {
                 json(Json {
@@ -41,12 +41,12 @@ object CommonModule {
                 connectTimeout = 10_000
                 socketTimeout = 10_000
             }
-            defaultRequest {
-                val token = runBlocking { jwtTokenManager.getJwt() }
-                if (token != null) {
-                    header(HttpHeaders.Authorization, "Bearer $token")
-                }
-            }
+//            defaultRequest {
+//                val token = runBlocking { jwtTokenManager.getJwt() }
+//                if (token != null) {
+//                    header(HttpHeaders.Authorization, "Bearer $token")
+//                }
+//            }
         }
     }
 }
