@@ -17,6 +17,7 @@ public class ObjectResponse {
     private Long foremanId;
     private Long customerId;
     private Long inspectorId;
+    private Long supervisionId;
     private Boolean activated;
     private LocalDate startDate;
 

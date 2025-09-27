@@ -4,10 +4,12 @@ import com.example.Interactive.Electronic.Journal.dto.request.ActivateObjectRequ
 import com.example.Interactive.Electronic.Journal.dto.request.AddObjectRequest;
 import com.example.Interactive.Electronic.Journal.dto.response.ObjectResponse;
 import com.example.Interactive.Electronic.Journal.entity.ConstructionObject;
+import com.example.Interactive.Electronic.Journal.entity.ConstructionSupervision;
 import com.example.Interactive.Electronic.Journal.entity.User;
 import com.example.Interactive.Electronic.Journal.enums.Role;
 import com.example.Interactive.Electronic.Journal.exception.ConstructionObjectException;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectRepository;
+import com.example.Interactive.Electronic.Journal.repository.ConstructionSupervisionRepository;
 import com.example.Interactive.Electronic.Journal.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +24,7 @@ public class ConstructionObjectService {
 
     private final ConstructionObjectRepository constructionObjectRepository;
     private final UserRepository userRepository;
+    private final ConstructionSupervisionRepository constructionSupervisionRepository;
 
     @Transactional
     public ObjectResponse addObject(AddObjectRequest request) {
@@ -65,8 +68,11 @@ public class ConstructionObjectService {
         ConstructionObject object = constructionObjectRepository.findById(request.getObjectId())
                 .orElseThrow(() -> new ConstructionObjectException("Object not found."));
 
+        ConstructionSupervision supervision = customer.getCustomerSupervision();
+
         object.setCustomer(customer);
         object.setForeman(foreman);
+        object.setSupervision(supervision);
         object.setActivated(request.getActivate());
         constructionObjectRepository.save(object);
 
@@ -84,6 +90,7 @@ public class ConstructionObjectService {
                 .customerId(object.getCustomer() != null ? object.getCustomer().getId() : null)
                 .foremanId(object.getForeman() != null ? object.getForeman().getId() : null)
                 .inspectorId(object.getInspector() != null ? object.getInspector().getId() : null)
+                .supervisionId(object.getSupervision() != null ? object.getSupervision().getId() : null)
                 .build();
     }
 
