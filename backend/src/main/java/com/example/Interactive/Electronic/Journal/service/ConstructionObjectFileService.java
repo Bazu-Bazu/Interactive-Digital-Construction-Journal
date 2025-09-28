@@ -4,21 +4,25 @@ import com.example.Interactive.Electronic.Journal.dto.response.ObjectFileRespons
 import com.example.Interactive.Electronic.Journal.entity.ConstructionObject;
 import com.example.Interactive.Electronic.Journal.entity.ConstructionObjectFile;
 import com.example.Interactive.Electronic.Journal.exception.ConstructionObjectException;
-import com.example.Interactive.Electronic.Journal.exception.FileNotFoundException;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectFileRepository;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectRepository;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +45,7 @@ public class ConstructionObjectFileService {
         objectFile.setFileName(file.getOriginalFilename());
         objectFile.setContentType(file.getContentType());
         objectFile.setSize(file.getSize());
-        objectFile.setUrl("/files/" + fileId);
+        objectFile.setUrl("/object-files/" + fileId);
 
         ConstructionObject object = constructionObjectRepository.findById(constructionObjectId)
                 .orElseThrow(() -> new ConstructionObjectException("Object not found."));
@@ -55,21 +59,36 @@ public class ConstructionObjectFileService {
                 .build();
     }
 
-    public GridFsResource getFileByUrl(String url) {
-        ConstructionObjectFile fileMetadata = constructionObjectFileRepository.findByUrl(url)
-                .orElseThrow(() -> new FileNotFoundException("File metadata not found."));
+    public List<ObjectFileResponse> getFileByObject(Long objectId) {
+        List<ConstructionObjectFile> files = constructionObjectFileRepository.findAllByObjectId(objectId);
 
-        GridFSFile gridFSFile = gridFsTemplate.findOne(
-                new Query(Criteria.where("filename").is(fileMetadata.getFileName())));
-
-        return gridFsTemplate.getResource(gridFSFile);
+        return files.stream()
+                .map(this::buildObjectFileResponse)
+                .toList();
     }
 
-    public ConstructionObjectFile getFileMetadataByUrl(String url) {
-        ConstructionObjectFile fileMetadata = constructionObjectFileRepository.findByUrl(url)
-                .orElseThrow(() -> new FileNotFoundException("File metadata not found."));
+    public ResponseEntity<Resource> downloadFile(String fileId) {
+        GridFSFile gridFSFile = gridFsTemplate.findOne(
+                new Query(Criteria.where("_id").is(new ObjectId(fileId))));
 
-        return fileMetadata;
+        GridFsResource resource = gridFsTemplate.getResource(gridFSFile);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(resource.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+    private ObjectFileResponse buildObjectFileResponse(ConstructionObjectFile file) {
+        return ObjectFileResponse.builder()
+                .id(file.getId())
+                .name(file.getFileName())
+                .url(file.getUrl())
+                .contentType(file.getContentType())
+                .size(file.getSize())
+                .objectId(file.getObjectId())
+                .build();
     }
 
 }

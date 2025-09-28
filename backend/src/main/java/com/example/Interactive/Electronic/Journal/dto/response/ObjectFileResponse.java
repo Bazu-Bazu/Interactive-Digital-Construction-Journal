@@ -7,6 +7,11 @@ import lombok.Data;
 @Builder
 public class ObjectFileResponse {
 
-    String url;
+    private String id;
+    private String name;
+    private String url;
+    private String contentType;
+    private Long size;
+    private Long objectId;
 
 }
