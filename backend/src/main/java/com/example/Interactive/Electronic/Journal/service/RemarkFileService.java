@@ -9,10 +9,14 @@ import com.example.Interactive.Electronic.Journal.repository.RemarkRepository;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +51,7 @@ public class RemarkFileService {
                         remarkFile.setFileName(file.getOriginalFilename());
                         remarkFile.setContentType(file.getContentType());
                         remarkFile.setSize(file.getSize());
-                        remarkFile.setUrl("/files/" + fileId);
+                        remarkFile.setUrl("/remark-files/" + fileId);
 
                         return remarkFile;
                     } catch (IOException e) {
@@ -66,23 +70,40 @@ public class RemarkFileService {
         remarkRepository.save(remark);
 
         return savedFiles.stream()
-                .map(file -> RemarkFileResponse.builder()
-                        .url(file.getUrl())
-                        .build())
+                .map(this::buildRemarkFileResponse)
                 .toList();
     }
 
-    public List<GridFsResource> getAllFilesOfRemark(Long remarkId) {
-        List<RemarkFile> files = remarkFileRepository.findAllByRemarkId(remarkId);
+    public List<RemarkFileResponse> getAllFilesOfRemark(Long remarkId) {
+        List<RemarkFile> remarks = remarkFileRepository.findAllByRemarkId(remarkId);
 
-        return files.stream()
-                .map(file -> {
-                    GridFSFile gridFSFile = gridFsTemplate.findOne(
-                            new Query(Criteria.where("filename").is(file.getFileName())));
-
-                    return gridFsTemplate.getResource(gridFSFile);
-                })
+        return remarks.stream()
+                .map(this::buildRemarkFileResponse)
                 .toList();
+    }
+
+    public ResponseEntity<Resource> downloadFile(String fileId) {
+        GridFSFile gridFSFile = gridFsTemplate.findOne(
+                new Query(Criteria.where("_id").is(new ObjectId(fileId))));
+
+        GridFsResource resource = gridFsTemplate.getResource(gridFSFile);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(resource.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+    private RemarkFileResponse buildRemarkFileResponse(RemarkFile file) {
+        return RemarkFileResponse.builder()
+                .id(file.getId())
+                .name(file.getFileName())
+                .url(file.getUrl())
+                .contentType(file.getContentType())
+                .size(file.getSize())
+                .remarkId(file.getRemarkId())
+                .build();
     }
 
 }

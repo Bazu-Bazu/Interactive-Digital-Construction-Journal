@@ -3,7 +3,7 @@ package com.example.Interactive.Electronic.Journal.controller;
 import com.example.Interactive.Electronic.Journal.dto.response.RemarkFileResponse;
 import com.example.Interactive.Electronic.Journal.service.RemarkFileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.gridfs.GridFsResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/remark-file")
+@RequestMapping("/remark-files")
 @RequiredArgsConstructor
 public class RemarkFileController {
 
@@ -27,11 +27,16 @@ public class RemarkFileController {
          return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/get-all-by-remark")
-//    public ResponseEntity<List<GridFsResource>> getAllFilesOfRemark(@RequestParam Long remarkId) {
-//        List<GridFsResource> response = remarkFileService.getAllFilesOfRemark(remarkId);
-//
-//        return ResponseEntity.ok(response);
-//    }
+    @GetMapping("/get-all-by-remark")
+    public ResponseEntity<List<RemarkFileResponse>> getAllFilesOfRemark(@RequestParam Long remarkId) {
+        List<RemarkFileResponse> response = remarkFileService.getAllFilesOfRemark(remarkId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+        return remarkFileService.downloadFile(fileId);
+    }
 
 }
