@@ -82,6 +82,14 @@ public class AuthService {
         refreshTokenService.deleteTokenByUser(user);
     }
 
+    public Long getUserId(UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+        return user.getId();
+    }
+
     private UserResponse buildUserResponse(User user, String accessToken, String refreshToken) {
         Long supervisionId;
         if (user.getCustomerSupervision() != null) {

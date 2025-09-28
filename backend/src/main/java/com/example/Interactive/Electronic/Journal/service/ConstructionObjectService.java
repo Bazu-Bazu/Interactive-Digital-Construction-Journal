@@ -55,9 +55,17 @@ public class ConstructionObjectService {
     }
 
     public List<ObjectResponse> getBySupervisionId(Long supervisionId) {
-        List<ConstructionObject> objectsList = constructionObjectRepository.findAllBySupervisionId(supervisionId);
+        List<ConstructionObject> objects = constructionObjectRepository.findAllBySupervisionId(supervisionId);
 
-        return objectsList.stream()
+        return objects.stream()
+                .map(this::buildObjectResponse)
+                .toList();
+    }
+
+    public List<ObjectResponse> getByForeman(Long foremanId) {
+        List<ConstructionObject> objects = constructionObjectRepository.findAllByForemanId(foremanId);
+
+        return objects.stream()
                 .map(this::buildObjectResponse)
                 .toList();
     }

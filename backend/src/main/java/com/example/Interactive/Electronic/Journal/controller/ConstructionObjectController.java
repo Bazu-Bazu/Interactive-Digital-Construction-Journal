@@ -3,6 +3,7 @@ package com.example.Interactive.Electronic.Journal.controller;
 import com.example.Interactive.Electronic.Journal.dto.request.ActivateObjectRequest;
 import com.example.Interactive.Electronic.Journal.dto.request.AddObjectRequest;
 import com.example.Interactive.Electronic.Journal.dto.response.ObjectResponse;
+import com.example.Interactive.Electronic.Journal.service.AuthService;
 import com.example.Interactive.Electronic.Journal.service.ConstructionObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ConstructionObjectController {
 
     private final ConstructionObjectService constructionObjectService;
+    private final AuthService authService;
 
     @PostMapping("/add")
     public ResponseEntity<ObjectResponse> addObject(@RequestBody AddObjectRequest request) {
@@ -43,6 +45,15 @@ public class ConstructionObjectController {
     @GetMapping("/get-by-supervision")
     public ResponseEntity<List<ObjectResponse>> getBySupervisionId(@RequestParam Long supervisionId) {
         List<ObjectResponse> response = constructionObjectService.getBySupervisionId(supervisionId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/get-by-foreman")
+    public ResponseEntity<List<ObjectResponse>> getByForeman(@AuthenticationPrincipal UserDetails userDetails) {
+        Long foremanId = authService.getUserId(userDetails);
+
+        List<ObjectResponse> response = constructionObjectService.getByForeman(foremanId);
 
         return ResponseEntity.ok(response);
     }

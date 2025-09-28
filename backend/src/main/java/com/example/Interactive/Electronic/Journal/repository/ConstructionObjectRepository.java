@@ -13,6 +13,7 @@ public interface ConstructionObjectRepository extends JpaRepository<Construction
 
     Optional<ConstructionObject> findById(Long id);
     List<ConstructionObject> findAllBySupervisionId(Long id);
+    List<ConstructionObject> findAllByForemanId(Long foremanId);
 
     @Query(value = "SELECT * FROM construction_objects ORDER BY start_date ASC LIMIT ?1", nativeQuery = true)
     List<ConstructionObject> findTopNByOrderByStartDateAsc(int count);
