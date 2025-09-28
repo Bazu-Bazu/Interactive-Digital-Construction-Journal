@@ -44,7 +44,8 @@ public class SecurityConfig {
                                 "/object/add",
                                 "/object/activate",
                                 "/remark/**",
-                                "/remark-file/add")
+                                "/remark-file/add",
+                                "/change/accept")
                         .hasRole("CUSTOMER")
                         .requestMatchers("/supervision/add",
                                 "/supervision/add-customers",
