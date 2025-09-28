@@ -3,6 +3,7 @@ package com.example.Interactive.Electronic.Journal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class Remark {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    private LocalDate deadline;
 
     @Column(nullable = false)
     private String description;

@@ -1,11 +1,10 @@
 package com.example.Interactive.Electronic.Journal.dto.response;
 
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,6 +15,7 @@ public class RemarkResponse {
     private LocalDateTime createdAt;
     private String description;
     private List<Double> coordinates;
+    private LocalDate deadline;
     private Boolean fixed;
     private List<String> urls;
 

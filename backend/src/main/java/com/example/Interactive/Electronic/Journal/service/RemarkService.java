@@ -32,6 +32,7 @@ public class RemarkService {
         remark.setCreatedAt(LocalDateTime.now());
         remark.setFixed(false);
         remark.setObject(object);
+        remark.setDeadline(request.getDeadline());
         remarkRepository.save(remark);
 
         return buildRemarkResponse(remark);
@@ -53,6 +54,7 @@ public class RemarkService {
                 .id(remark.getId())
                 .coordinates(remark.getCoordinates())
                 .createdAt(remark.getCreatedAt())
+                .deadline(remark.getDeadline())
                 .description(remark.getDescription())
                 .fixed(remark.getFixed())
                 .urls(remark.getUrls())
