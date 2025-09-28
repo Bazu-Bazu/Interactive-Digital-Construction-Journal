@@ -3,6 +3,8 @@ package com.example.Interactive.Electronic.Journal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "changes")
 @Data
@@ -19,6 +21,12 @@ public class Change {
     private Boolean accepted;
 
     private String type;
+
+    @Column(name = "proposed_start_date")
+    private LocalDate proposedStartDate;
+
+    @Column(name = "proposed_end_date")
+    private LocalDate proposedEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "part_id")

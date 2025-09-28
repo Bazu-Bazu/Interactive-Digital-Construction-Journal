@@ -50,6 +50,8 @@ public class SecurityConfig {
                                 "/supervision/add-customers",
                                 "/supervision/add-inspectors")
                         .hasRole("INSPECTOR")
+                        .requestMatchers("/change/add")
+                        .hasRole("FOREMAN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
