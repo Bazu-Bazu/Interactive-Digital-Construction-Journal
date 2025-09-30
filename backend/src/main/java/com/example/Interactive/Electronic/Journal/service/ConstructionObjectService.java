@@ -9,7 +9,6 @@ import com.example.Interactive.Electronic.Journal.entity.User;
 import com.example.Interactive.Electronic.Journal.enums.Role;
 import com.example.Interactive.Electronic.Journal.exception.ConstructionObjectException;
 import com.example.Interactive.Electronic.Journal.repository.ConstructionObjectRepository;
-import com.example.Interactive.Electronic.Journal.repository.ConstructionSupervisionRepository;
 import com.example.Interactive.Electronic.Journal.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +23,6 @@ public class ConstructionObjectService {
 
     private final ConstructionObjectRepository constructionObjectRepository;
     private final UserRepository userRepository;
-    private final ConstructionSupervisionRepository constructionSupervisionRepository;
 
     @Transactional
     public ObjectResponse addObject(AddObjectRequest request) {
@@ -91,6 +89,12 @@ public class ConstructionObjectService {
         object.setSupervision(supervision);
         object.setActivated(request.getActivate());
         constructionObjectRepository.save(object);
+
+        customer.setObjectId(object.getId());
+        userRepository.save(customer);
+
+        foreman.setObjectId(object.getId());
+        userRepository.save(foreman);
 
         return buildObjectResponse(object);
     }

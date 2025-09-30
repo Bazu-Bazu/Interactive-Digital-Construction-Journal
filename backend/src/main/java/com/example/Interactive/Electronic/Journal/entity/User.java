@@ -40,4 +40,6 @@ public class User {
     @JoinColumn(name = "customer_supervision_id")
     private ConstructionSupervision customerSupervision;
 
+    @Column(name = "object_id")
+    private Long objectId;
 }

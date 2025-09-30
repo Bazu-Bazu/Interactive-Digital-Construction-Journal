@@ -44,7 +44,7 @@ public class JwtService {
         if (userDetails instanceof CustomUserDetails customUserDetails) {
             claims.put("userId", customUserDetails.getUser().getId());
             claims.put("role", customUserDetails.getUser().getRole());
-            claims.put("accessibleObject", customUserDetails.getUser());
+            claims.put("accessibleObject", customUserDetails.getUser().getObjectId());
         }
 
         Date date = createExpirationDate(accessTokenExpiration);
@@ -76,7 +76,7 @@ public class JwtService {
         );
     }
 
-    public Long getAccessibleObjectIds(String token) {
+    public Long getAccessibleObjectId(String token) {
         Claims claims = extractAllClaims(token);
 
         return claims.get("accessibleObject", Long.class);
