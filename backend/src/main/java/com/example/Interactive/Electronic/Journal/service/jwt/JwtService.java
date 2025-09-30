@@ -1,5 +1,7 @@
 package com.example.Interactive.Electronic.Journal.service.jwt;
 
+import com.example.Interactive.Electronic.Journal.dto.CustomUserDetails;
+import com.example.Interactive.Electronic.Journal.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -39,6 +41,12 @@ public class JwtService {
                 .toList();
         claims.put("authorities", authorities);
 
+        if (userDetails instanceof CustomUserDetails customUserDetails) {
+            claims.put("userId", customUserDetails.getUser().getId());
+            claims.put("role", customUserDetails.getUser().getRole());
+            claims.put("accessibleObject", customUserDetails.getUser());
+        }
+
         Date date = createExpirationDate(accessTokenExpiration);
 
         return Jwts.builder()
@@ -66,6 +74,24 @@ public class JwtService {
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
         );
+    }
+
+    public Long getAccessibleObjectIds(String token) {
+        Claims claims = extractAllClaims(token);
+
+        return claims.get("accessibleObject", Long.class);
+    }
+
+    public Role getUserRole(String token) {
+        Claims claims = extractAllClaims(token);
+
+        return claims.get("role", Role.class);
+    }
+
+    public Long getUserId(String token) {
+        Claims claims = extractAllClaims(token);
+
+        return claims.get("userId", Long.class);
     }
 
     private SecretKey getSignInKey() {
