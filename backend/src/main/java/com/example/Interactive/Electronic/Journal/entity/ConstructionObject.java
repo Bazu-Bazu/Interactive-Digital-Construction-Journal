@@ -56,8 +56,8 @@ public class ConstructionObject {
     @OneToMany(mappedBy = "object", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Change> changes = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "object_id", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Material> materials = new ArrayList<>();
+    @OneToMany(mappedBy = "object", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConstructionMaterial> materials = new ArrayList<>();
 
 //    @Column(name = "open_action check_list_url")
 //    private String openActionCheckListUrl;

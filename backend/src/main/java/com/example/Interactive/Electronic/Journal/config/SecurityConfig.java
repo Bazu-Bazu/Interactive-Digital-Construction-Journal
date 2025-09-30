@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 "/supervision/add-inspectors")
                         .hasRole("INSPECTOR")
                         .requestMatchers("/change/add",
+                                "/material/add",
                                 "/object/get-by-foreman")
                         .hasRole("FOREMAN")
                         .anyRequest().authenticated()
