@@ -44,11 +44,11 @@ public class ConstructionSupervisionService {
     }
 
     @Transactional
-    public SupervisionResponse addCustomersToSupervision(List<Long> customerIds, Long supervisionId) {
+    public SupervisionResponse addCustomersToSupervision(List<String> customerEmails, Long supervisionId) {
         ConstructionSupervision supervision = constructionSupervisionRepository.findById(supervisionId)
                 .orElseThrow(() -> new ConstructionObjectException("Supervision not found."));
 
-        List<User> customers = userRepository.findAllById(customerIds);
+        List<User> customers = userRepository.findByEmailIn(customerEmails);
         List<User> filterCustomers = customers.stream()
                 .filter(customer -> customer.getRole() == Role.ROLE_CUSTOMER)
                 .toList();
@@ -63,11 +63,11 @@ public class ConstructionSupervisionService {
     }
 
     @Transactional
-    public SupervisionResponse addInspectorsToSupervision(List<Long> inspectorIds, Long supervisionId) {
+    public SupervisionResponse addInspectorsToSupervision(List<String> inspectorEmails, Long supervisionId) {
         ConstructionSupervision supervision = constructionSupervisionRepository.findById(supervisionId)
                 .orElseThrow(() -> new ConstructionObjectException("Supervision not found."));
 
-        List<User> inspectors = userRepository.findAllById(inspectorIds);
+        List<User> inspectors = userRepository.findByEmailIn(inspectorEmails);
         List<User> filterInspectors = inspectors.stream()
                 .filter(inspector -> inspector.getRole() == Role.ROLE_INSPECTOR)
                 .toList();

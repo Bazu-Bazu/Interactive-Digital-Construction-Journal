@@ -41,7 +41,7 @@ public class ConstructionSupervisionController {
     @PostMapping("/add-customers")
     public ResponseEntity<SupervisionResponse> addCustomersToSupervision(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam List<Long> customerIds,
+            @RequestParam List<String> customerEmails,
             @RequestParam Long supervisionId)
     {
         String email = userDetails.getUsername();
@@ -52,7 +52,7 @@ public class ConstructionSupervisionController {
         }
 
         SupervisionResponse response = constructionSupervisionService
-                .addCustomersToSupervision(customerIds, supervisionId);
+                .addCustomersToSupervision(customerEmails, supervisionId);
 
         return ResponseEntity.ok(response);
     }
@@ -60,7 +60,7 @@ public class ConstructionSupervisionController {
     @PostMapping("/add-inspectors")
     public ResponseEntity<SupervisionResponse> addInspectorsToSupervision(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam List<Long> inspectorIds,
+            @RequestParam List<String> inspectorEmails,
             @RequestParam Long supervisionId)
     {
         String email = userDetails.getUsername();
@@ -71,7 +71,7 @@ public class ConstructionSupervisionController {
         }
 
         SupervisionResponse response = constructionSupervisionService
-                .addInspectorsToSupervision(inspectorIds, supervisionId);
+                .addInspectorsToSupervision(inspectorEmails, supervisionId);
 
         return ResponseEntity.ok(response);
     }
